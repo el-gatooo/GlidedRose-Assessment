@@ -99,6 +99,24 @@ class GildedRoseTest(unittest.TestCase):
         GildedRose(items).update_quality()
         self.assertEqual(0, items[0].quality)
 
+    # ---- Conjured items ----
+
+    def test_conjured_item_degrades_twice_as_fast_before_sell_date(self):
+        items = [Item("Conjured Mana Cake", 3, 6)]
+        GildedRose(items).update_quality()
+        self.assertEqual(2, items[0].sell_in)
+        self.assertEqual(4, items[0].quality)
+
+    def test_conjured_item_degrades_four_times_as_fast_after_sell_date(self):
+        items = [Item("Conjured Mana Cake", 0, 10)]
+        GildedRose(items).update_quality()
+        self.assertEqual(6, items[0].quality)
+
+    def test_conjured_item_quality_never_negative(self):
+        items = [Item("Conjured Mana Cake", 3, 1)]
+        GildedRose(items).update_quality()
+        self.assertEqual(0, items[0].quality)
+
 
 if __name__ == '__main__':
     unittest.main()

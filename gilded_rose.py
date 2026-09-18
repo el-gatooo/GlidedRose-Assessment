@@ -6,6 +6,7 @@ MIN_QUALITY = 0
 AGED_BRIE = "Aged Brie"
 BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
 SULFURAS = "Sulfuras, Hand of Ragnaros"
+CONJURED_PREFIX = "Conjured"
 
 
 class GildedRose(object):
@@ -27,7 +28,9 @@ class GildedRose(object):
         elif item.name == BACKSTAGE_PASSES:
             self._age_backstage_pass(item)
         else:
-            self._decrease_quality(item)
+            # Covers normal items AND "Conjured" items, which simply
+            # degrade twice as fast as normal items.
+            self._decrease_quality(item, self._degrade_amount(item))
 
         item.sell_in -= 1
 
@@ -39,7 +42,7 @@ class GildedRose(object):
                 # Passes are worthless after the concert.
                 item.quality = 0
             else:
-                self._decrease_quality(item)
+                self._decrease_quality(item, self._degrade_amount(item))
 
     def _age_backstage_pass(self, item):
         self._increase_quality(item)
@@ -47,6 +50,10 @@ class GildedRose(object):
             self._increase_quality(item)
         if item.sell_in < 6:
             self._increase_quality(item)
+
+    @staticmethod
+    def _degrade_amount(item):
+        return 2 if item.name.startswith(CONJURED_PREFIX) else 1
 
     @staticmethod
     def _increase_quality(item, amount=1):

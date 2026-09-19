@@ -35,7 +35,6 @@ class GildedRose(object):
             if item.name == AGED_BRIE:
                 self._increase_quality(item)
             elif item.name == BACKSTAGE_PASSES:
-                # Passes are worthless after the concert.
                 item.quality = 0
             else:
                 self._decrease_quality(item, self._degrade_amount(item))

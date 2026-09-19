@@ -1,50 +1,48 @@
 # Gilded Rose Refactoring Kata
 
+This repository contains my solution to the Gilded Rose Refactoring Challenge.
+
 ## Approach
 
-This repo's commit history shows the process step by step:
+I completed the challenge in the following steps:
 
-1. **Initial commit** – the original, unmodified starting code (buggy/unstructured,
-   as given).
-2. **Characterization tests** – before touching any logic, I wrote unit tests
-   against the *original* code to lock in its existing (intended) behavior for
-   every item type: normal items, Aged Brie, Sulfuras, and Backstage Passes.
-   These passed against the original code, confirming the tests describe the
-   correct behavior and give a safety net for refactoring.
-3. **Refactor** – rewrote `update_quality()` using small, named helper methods
-   instead of deeply nested `if` statements, centralized the "quality is
-   clamped between 0 and 50" rule into two helper methods, and replaced
-   negated string comparisons (`!=`) with direct, positive checks. All 16
-   existing tests still passed unchanged after this step, confirming no
-   behavior was altered — this was a pure refactor.
-4. **New feature: Conjured items** – added support for items whose name
-   starts with `"Conjured"`, which degrade in quality twice as fast as
-   normal items (and therefore four times as fast once the sell-by date has
-   passed, consistent with the existing "twice as fast after expiry" rule).
-   Added 3 new tests covering this.
+1. Preserved the original code in the initial commit.
+2. Added unit tests for normal items, Aged Brie, Sulfuras, and Backstage passes.
+3. Refactored `update_quality()` into smaller helper methods while keeping the existing behavior unchanged.
+4. Added support and tests for Conjured items.
 
-`Item` was never modified, as required.
+The refactoring removes deeply nested conditions, replaces repeated strings with constants, and centralizes the quality limits between 0 and 50. The `Item` class was not modified, as required.
 
-## Design decision
+## Conjured Items
 
-I kept the design intentionally simple (helper methods + a per-item
-dispatch) rather than introducing a full Strategy Pattern with one class
-per item type. With only 5 item types and no indication that many more are
-coming, a small set of clear functions is easier to read and review than
-several extra classes. If this system were expected to grow with many more
-item types over time, I would move to a Strategy Pattern (one updater class
-per item type, selected via a factory) to keep `update_quality()` itself
-untouched when adding new types — I'm happy to walk through that
-alternative as well.
+Conjured items degrade twice as fast as normal items:
 
-## Running tests
+* Before expiration: quality decreases by 2.
+* After expiration: quality decreases by 4.
 
-```bash
-python3 -m unittest test_gilded_rose -v
+## Design Decision
+
+I used small helper methods instead of a full Strategy Pattern because the current number of item types is limited. This keeps the solution simple and readable. A Strategy Pattern could be introduced later if more item categories are added.
+
+## Running the Tests
+
+```powershell
+python -m unittest test_gilded_rose -v
 ```
 
-## Running the text-based fixture
+The project contains 19 unit tests covering all item types, expiration behavior, and quality boundaries.
 
-```bash
-python3 texttest_fixture.py <days>
+Expected result:
+
+```text
+Ran 19 tests
+OK
 ```
+
+## Running the Text Fixture
+
+```powershell
+python texttest_fixture.py 5
+```
+
+The text fixture provides a readable inventory simulation across multiple days.

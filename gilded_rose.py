@@ -20,7 +20,6 @@ class GildedRose(object):
 
     def _update_item(self, item):
         if item.name == SULFURAS:
-            # Legendary item: never sold, never changes quality.
             return
 
         if item.name == AGED_BRIE:
@@ -28,13 +27,10 @@ class GildedRose(object):
         elif item.name == BACKSTAGE_PASSES:
             self._age_backstage_pass(item)
         else:
-            # Covers normal items AND "Conjured" items, which simply
-            # degrade twice as fast as normal items.
             self._decrease_quality(item, self._degrade_amount(item))
 
         item.sell_in -= 1
 
-        # Quality degrades (or grows) twice as fast once sell-by has passed.
         if item.sell_in < 0:
             if item.name == AGED_BRIE:
                 self._increase_quality(item)

@@ -6,7 +6,7 @@ from gilded_rose import Item, GildedRose
 
 class GildedRoseTest(unittest.TestCase):
 
-    # ---- Normal items ----
+    #Normal items
 
     def test_normal_item_degrades_by_one_before_sell_date(self):
         items = [Item("+5 Dexterity Vest", 10, 20)]
@@ -30,7 +30,7 @@ class GildedRoseTest(unittest.TestCase):
         GildedRose(items).update_quality()
         self.assertEqual(0, items[0].quality)
 
-    # ---- Aged Brie ----
+    #Aged Brie
 
     def test_aged_brie_increases_in_quality(self):
         items = [Item("Aged Brie", 2, 0)]
@@ -53,7 +53,7 @@ class GildedRoseTest(unittest.TestCase):
         GildedRose(items).update_quality()
         self.assertEqual(50, items[0].quality)
 
-    # ---- Sulfuras ----
+    #Sulfuras
 
     def test_sulfuras_never_changes_quality_or_sell_in(self):
         items = [Item("Sulfuras, Hand of Ragnaros", 5, 80)]
@@ -67,7 +67,7 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(-1, items[0].sell_in)
         self.assertEqual(80, items[0].quality)
 
-    # ---- Backstage passes ----
+    #Backstage passes
 
     def test_backstage_passes_increase_by_one_when_far_out(self):
         items = [Item("Backstage passes to a TAFKAL80ETC concert", 15, 20)]
@@ -99,7 +99,7 @@ class GildedRoseTest(unittest.TestCase):
         GildedRose(items).update_quality()
         self.assertEqual(0, items[0].quality)
 
-    # ---- Conjured items ----
+    #Conjured items
 
     def test_conjured_item_degrades_twice_as_fast_before_sell_date(self):
         items = [Item("Conjured Mana Cake", 3, 6)]
